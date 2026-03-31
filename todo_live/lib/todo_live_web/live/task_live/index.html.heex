@@ -1,0 +1,54 @@
+<div class="max-w-xl mx-auto p-6 md:p-10 space-y-8">
+  <header class="flex flex-col gap-2">
+    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Minhas Tarefas</h1>
+    <p class="text-slate-500">Mantenha seu dia organizado e sem pendências.</p>
+  </header>
+
+  <section id="task-form-panel">
+    <.card>
+      <:header>Nova Tarefa</:header>
+      
+      <.form
+        for={@form}
+        phx-change="validate"
+        phx-submit="save"
+        class="space-y-4"
+      >
+        <.input 
+          field={@form[:title]} 
+          label="O que precisa ser feito?" 
+          placeholder="Ex: Revisar PR, Comprar café..."
+          autocomplete="off"
+        />
+
+        <div class="flex justify-end pt-2">
+          <.button 
+            type="submit" 
+            variant={:primary} 
+            disabled={!@can_submit?}
+            class="w-full sm:w-auto"
+          >
+            Adicionar à lista
+          </.button>
+        </div>
+      </.form>
+    </.card>
+  </section>
+
+  <section id="tasks-list-panel" class="space-y-4">
+    <div :if={@tasks == []} class="text-center py-12 px-6 border-2 border-dashed border-slate-200 rounded-2xl">
+      <div class="text-slate-300 mb-4 inline-flex items-center justify-center bg-slate-50 p-4 rounded-full">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-slate-700">Tudo limpo por aqui!</h3>
+      <p class="text-slate-500 text-sm mt-1">Nenhuma tarefa pendente no momento.</p>
+    </div>
+
+    <%= for task <- @tasks do %>
+      <.task_item task={task} />
+    <% end %>
+  </section>
+</div>
+
